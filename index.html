@@ -3,158 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Checklist</title>
+    <title>Checklist de Gestión de Información</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        /* Estilos modernos y limpios */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
+            background: #f4f7fc;
             margin: 0;
             padding: 20px;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
         .container {
-            max-width: 850px;
+            max-width: 800px;
             width: 100%;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-            padding: 35px 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px 40px;
+            transition: all 0.3s ease;
         }
         h1 {
+            text-align: center;
             color: #1a2b4c;
             font-weight: 600;
-            font-size: 1.9rem;
+            border-bottom: 3px solid #4a90e2;
+            padding-bottom: 15px;
             margin-top: 0;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        .subtitle {
-            text-align: center;
-            color: #5a6e8a;
-            margin-top: -5px;
             margin-bottom: 25px;
-            font-size: 1rem;
+            letter-spacing: 0.5px;
         }
-        /* Área de input */
-        .input-area {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 20px 22px;
-            border: 2px dashed #cbd5e0;
-            margin-bottom: 25px;
-        }
-        .input-area label {
-            display: block;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 8px;
-            font-size: 1.05rem;
-        }
-        .input-area textarea {
-            width: 100%;
-            min-height: 160px;
-            padding: 14px 16px;
-            border: 2px solid #dce4ec;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            resize: vertical;
-            transition: border-color 0.25s;
-            background: white;
-            color: #1a202c;
-            line-height: 1.6;
-        }
-        .input-area textarea:focus {
-            outline: none;
-            border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
-        }
-        .input-area .hint {
-            font-size: 0.9rem;
-            color: #718096;
-            margin-top: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .input-area .hint span {
-            background: #edf2f7;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-weight: 500;
-            color: #2d3748;
-        }
-        .btn-generate {
-            background: #4a90e2;
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .btn-generate:hover {
-            background: #3a7bc8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(74, 144, 226, 0.35);
-        }
-        .btn-generate:active {
-            transform: scale(0.96);
-        }
-        .btn-generate:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-        .btn-reset {
-            background: #e2e8f0;
-            color: #2d3748;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-reset:hover {
-            background: #cbd5e0;
-        }
-
-        /* Checklist generado */
-        .checklist-section {
-            margin-top: 10px;
-            display: none;
-        }
-        .checklist-section.visible {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .checklist {
             list-style: none;
             padding: 0;
@@ -163,13 +43,13 @@
         .checklist li {
             display: flex;
             align-items: center;
-            padding: 12px 16px;
+            padding: 12px 15px;
             margin-bottom: 8px;
             background: #f9fafc;
             border-radius: 12px;
             border-left: 5px solid #4a90e2;
             transition: background 0.2s, transform 0.1s;
-            font-size: 1.02rem;
+            font-size: 1.05rem;
             color: #1e2a3a;
             font-weight: 500;
             gap: 15px;
@@ -178,6 +58,7 @@
             background: #f0f4fe;
             transform: translateX(4px);
         }
+        /* Ocultamos el checkbox por defecto y creamos uno personalizado */
         .checklist li input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
@@ -192,11 +73,13 @@
             flex-shrink: 0;
             position: relative;
         }
+        /* Estilo cuando está marcado */
         .checklist li input[type="checkbox"]:checked {
             background: #4a90e2;
             border-color: #4a90e2;
             box-shadow: 0 2px 6px rgba(74, 144, 226, 0.3);
         }
+        /* Dibujamos el check (✓) con un pseudo-elemento */
         .checklist li input[type="checkbox"]:checked::after {
             content: "✓";
             font-size: 18px;
@@ -208,22 +91,10 @@
         }
         .checklist li .text {
             flex: 1;
-            word-break: break-word;
         }
-        /* Número de ítem */
-        .checklist li .item-number {
-            font-weight: 600;
-            color: #4a90e2;
-            background: #e8eff9;
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            min-width: 28px;
-            text-align: center;
-        }
-
+        /* Contador de progreso */
         .progress-area {
-            margin-top: 25px;
+            margin-top: 30px;
             padding-top: 20px;
             border-top: 2px dashed #dce4ec;
             display: flex;
@@ -241,224 +112,164 @@
             font-weight: 700;
             color: #1a2b4c;
         }
-        .btn-clear-check {
+        .btn-reset {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 22px;
+            padding: 10px 24px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
         }
-        .btn-clear-check:hover {
+        .btn-reset:hover {
             background: #c0392b;
             transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
         }
+        .btn-reset:active {
+            transform: scale(0.96);
+        }
+        /* Pequeño para móviles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .checklist li {
+                font-size: 0.95rem;
+                padding: 10px 12px;
+            }
+        }
+        /* Resaltar si está completado */
         .completed-message {
             text-align: center;
-            margin-top: 12px;
+            margin-top: 10px;
             font-weight: 600;
             color: #27ae60;
             display: none;
-            font-size: 1.1rem;
         }
         .completed-message.show {
             display: block;
             animation: fadeIn 0.5s ease;
         }
-        .empty-message {
-            text-align: center;
-            color: #a0aec0;
-            padding: 30px 0;
-            font-style: italic;
-        }
-
-        @media (max-width: 600px) {
-            .container { padding: 20px; }
-            .input-area { padding: 15px; }
-            .checklist li { font-size: 0.92rem; padding: 10px 12px; }
-            .btn-generate { width: 100%; justify-content: center; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📋 Generador de Checklist</h1>
-        <p class="subtitle">Ingresa tus ítems (uno por línea) y conviértelos en un checklist interactivo</p>
+        <h1>📋 Checklist de Gestión</h1>
 
-        <!-- Área de entrada -->
-        <div class="input-area">
-            <label for="itemInput">✏️ Escribe tus ítems aquí (uno debajo de otro):</label>
-            <textarea id="itemInput" placeholder="Ejemplo:&#10;Gestión de la Información&#10;Transformación Digital&#10;Sistemas de Información&#10;Ingeniería de Software"></textarea>
-            <div class="hint">
-                <span>📌 Separa cada ítem con un salto de línea</span>
-                <span id="lineCount">0 líneas</span>
+        <!-- Lista de ítems con los títulos proporcionados -->
+        <ul class="checklist" id="checklist">
+            <li>
+                <input type="checkbox" id="item1">
+                <label for="item1" class="text">2.2.1. Gestión de la Información en Instituciones Educativas</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item2">
+                <label for="item2" class="text">2.2.2. Transformación Digital en la Educación Superior</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item3">
+                <label for="item3" class="text">2.2.3. Sistemas de Información</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item4">
+                <label for="item4" class="text">2.2.4. Ingeniería de Software y Aplicaciones Web</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item5">
+                <label for="item5" class="text">2.2.5. Intranets Institucionales</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item6">
+                <label for="item6" class="text">2.2.6. Gestión de Correos Institucionales</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item7">
+                <label for="item7" class="text">2.2.7. Gestión de Prácticas Preprofesionales</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item8">
+                <label for="item8" class="text">2.2.8. Gestión Documental</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item9">
+                <label for="item9" class="text">2.2.9. Metodologías de Desarrollo de Software</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item10">
+                <label for="item10" class="text">2.2.10. Base de Datos y Modelado de Datos</label>
+            </li>
+            <li>
+                <input type="checkbox" id="item11">
+                <label for="item11" class="text">2.2.11. Calidad de Software y Usabilidad</label>
+            </li>
+        </ul>
+
+        <!-- Área de progreso y acciones -->
+        <div class="progress-area">
+            <div class="progress-text">
+                ✅ Completados: <span id="countDisplay">0</span> / <span id="totalDisplay">11</span>
             </div>
-            <div class="btn-group">
-                <button class="btn-generate" id="generateBtn">🚀 Generar Checklist</button>
-                <button class="btn-reset" id="clearInputBtn">🗑️ Limpiar campo</button>
-            </div>
+            <button class="btn-reset" id="resetBtn">🔄 Desmarcar todo</button>
         </div>
-
-        <!-- Sección del checklist generado -->
-        <div class="checklist-section" id="checklistSection">
-            <h2 style="font-size: 1.3rem; color: #1a2b4c; margin-top: 0; margin-bottom: 15px;">✅ Checklist generado</h2>
-            <ul class="checklist" id="checklistContainer">
-                <!-- Aquí se insertan dinámicamente los ítems -->
-            </ul>
-
-            <div class="progress-area">
-                <div class="progress-text">
-                    ✅ Completados: <span id="countDisplay">0</span> / <span id="totalDisplay">0</span>
-                </div>
-                <button class="btn-clear-check" id="clearChecksBtn">🔄 Desmarcar todos</button>
-            </div>
-            <div id="completedMessage" class="completed-message">🎉 ¡Todos los ítems completados!</div>
-        </div>
+        <div id="completedMessage" class="completed-message">🎉 ¡Todos los ítems completados! Excelente trabajo.</div>
     </div>
 
     <script>
         (function() {
-            // Elementos
-            const textarea = document.getElementById('itemInput');
-            const generateBtn = document.getElementById('generateBtn');
-            const clearInputBtn = document.getElementById('clearInputBtn');
-            const checklistSection = document.getElementById('checklistSection');
-            const checklistContainer = document.getElementById('checklistContainer');
+            const checklist = document.getElementById('checklist');
+            const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
             const countDisplay = document.getElementById('countDisplay');
             const totalDisplay = document.getElementById('totalDisplay');
-            const clearChecksBtn = document.getElementById('clearChecksBtn');
+            const resetBtn = document.getElementById('resetBtn');
             const completedMessage = document.getElementById('completedMessage');
-            const lineCount = document.getElementById('lineCount');
 
-            // Actualizar contador de líneas en tiempo real
-            textarea.addEventListener('input', function() {
-                const lines = this.value.split('\n').filter(line => line.trim() !== '');
-                lineCount.textContent = lines.length + ' líneas';
-            });
-
-            // Limpiar campo de texto
-            clearInputBtn.addEventListener('click', function() {
-                textarea.value = '';
-                lineCount.textContent = '0 líneas';
-                textarea.focus();
-            });
-
-            // Generar checklist a partir del texto
-            function generateChecklist() {
-                const rawText = textarea.value;
-                // Separar por saltos de línea y filtrar líneas vacías
-                const items = rawText.split('\n')
-                    .map(line => line.trim())
-                    .filter(line => line !== '');
-
-                if (items.length === 0) {
-                    alert('⚠️ Por favor, ingresa al menos un ítem.');
-                    return;
-                }
-
-                // Limpiar contenedor
-                checklistContainer.innerHTML = '';
-                let html = '';
-
-                // Crear cada ítem con su número
-                items.forEach((item, index) => {
-                    const number = index + 1;
-                    // ID único para cada checkbox
-                    const id = 'item-' + Date.now() + '-' + index;
-                    html += `
-                        <li>
-                            <input type="checkbox" id="${id}">
-                            <label for="${id}" class="text">
-                                <span class="item-number">${number}</span>
-                                ${escapeHtml(item)}
-                            </label>
-                        </li>
-                    `;
-                });
-
-                checklistContainer.innerHTML = html;
-
-                // Mostrar la sección del checklist
-                checklistSection.classList.add('visible');
-
-                // Actualizar contadores
-                updateProgress();
-
-                // Scroll suave hacia el checklist
-                checklistSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            // Función para escapar HTML (seguridad básica)
-            function escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-
-            // Actualizar progreso
+            // Actualizar contador y mensaje de finalización
             function updateProgress() {
-                const checkboxes = checklistContainer.querySelectorAll('input[type="checkbox"]');
-                const total = checkboxes.length;
                 let checked = 0;
                 checkboxes.forEach(cb => {
                     if (cb.checked) checked++;
                 });
-
                 countDisplay.textContent = checked;
+                const total = checkboxes.length;
                 totalDisplay.textContent = total;
 
                 // Mostrar mensaje si todos están marcados
-                if (total > 0 && checked === total) {
+                if (checked === total && total > 0) {
                     completedMessage.classList.add('show');
                 } else {
                     completedMessage.classList.remove('show');
                 }
             }
 
-            // Desmarcar todos los checkboxes del checklist
-            function clearAllChecks() {
-                const checkboxes = checklistContainer.querySelectorAll('input[type="checkbox"]');
+            // Asignar evento a cada checkbox
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', updateProgress);
+            });
+
+            // Botón reset: desmarcar todos
+            resetBtn.addEventListener('click', function() {
                 checkboxes.forEach(cb => {
                     cb.checked = false;
                 });
-                updateProgress();
-            }
-
-            // Eventos
-            generateBtn.addEventListener('click', generateChecklist);
-
-            // También generar con Ctrl+Enter en el textarea
-            textarea.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                    e.preventDefault();
-                    generateBtn.click();
-                }
+                updateProgress(); // actualizar contador y mensaje
             });
 
-            // Delegación de eventos para los checkboxes (se actualiza el progreso)
-            checklistContainer.addEventListener('change', function(e) {
-                if (e.target && e.target.matches('input[type="checkbox"]')) {
-                    updateProgress();
-                }
-            });
+            // Inicializar contador y total
+            totalDisplay.textContent = checkboxes.length;
+            updateProgress(); // para que el contador muestre 0 al inicio y oculte mensaje
 
-            clearChecksBtn.addEventListener('click', clearAllChecks);
-
-            // Inicializar contador de líneas
-            lineCount.textContent = '0 líneas';
-
-            // Si ya hay texto al cargar (por si se recarga), actualizar líneas
-            textarea.dispatchEvent(new Event('input'));
-
-            // (Opcional) Ejemplo precargado para demostración
-            // Puedes descomentar esta línea si quieres un ejemplo inicial:
-            // textarea.value = "Gestión de la Información en Instituciones Educativas\nTransformación Digital en la Educación Superior\nSistemas de Información\nIngeniería de Software y Aplicaciones Web\nIntranets Institucionales\nGestión de Correos Institucionales\nGestión de Prácticas Preprofesionales\nGestión Documental\nMetodologías de Desarrollo de Software\nBase de Datos y Modelado de Datos\nCalidad de Software y Usabilidad";
-            // textarea.dispatchEvent(new Event('input'));
+            // (Opcional) Si quieres que al hacer clic en el label también funcione, 
+            // ya que los labels están asociados con el atributo "for" y el id del input.
         })();
     </script>
+
 </body>
 </html>
